@@ -1,6 +1,7 @@
 import java.util.*;
 
 
+
 public class Restraurent {
     
     // Contains the usernames and password
@@ -10,8 +11,9 @@ public class Restraurent {
     private static String PASSWORD;
     private static boolean isLoggedIn;
     private static boolean notFirstTimeFailed;
-    private static boolean isAdmin;
     private static Hashtable<String,Vector<Dishes>> Dishes = new Hashtable<String,Vector<Dishes>>();
+    // CHECK IF THE USER LOGGED IN IS ADMIN OR NOT ( 0 - Admin & 1 - Staff)
+    private static BitSet whoIsLogged = new BitSet(2);
     // CURRENT ORDER
     private static Order currentOrder;
     //  LIST OF ALL THE ORDERS
@@ -28,7 +30,9 @@ public class Restraurent {
 
         notFirstTimeFailed = false;
         isLoggedIn = false;
-        isAdmin = false;
+        
+
+
         scan = new Scanner(System.in);
 
 
@@ -65,8 +69,10 @@ public class Restraurent {
             if(users.getProperty(USERNAME) != null && users.getProperty(USERNAME).equals(PASSWORD)){
                 isLoggedIn = true;
                 if (USERNAME.equals("admin")){
-                    isAdmin = true;
-                } 
+                    whoIsLogged.set(0);
+                } else {
+                    whoIsLogged.set(1);
+                }
                 // USER IS LOGGED IN
                 print("CONGRATULATIONS YOUR ARE LOGGED IN AS " + USERNAME + "\n");
                 printLine();
@@ -77,7 +83,7 @@ public class Restraurent {
         }
 
         while(true){
-            if(isAdmin){
+            if(whoIsLogged.get(0)){
                 isAdminOperations();          
             } else {
                 isNotAdminOperations();
@@ -94,9 +100,10 @@ public class Restraurent {
             print(" 2. ADD ORDER\n");
             print(" 3. ORDERS HISTORY\n");
             print(" 4. VIEW ORDER\n");
+            print(" 5. Logout\n");
             printLine();
             print(" Enter your choice : ");
-            Integer choice = scan.nextInt();
+            Integer choice = Integer.parseInt(scan.nextLine().toString());
 
         //        PERFORM A PARTICULAR ACTION
             switch(choice) {
@@ -107,6 +114,8 @@ public class Restraurent {
                 case 3: orderHistory();
                         break;
                 case 4: getOrder();
+                        break;
+                case 5: logout();
                         break;
                 default: print("ENTER A VALID INPUT\n");
                         break;
@@ -126,10 +135,11 @@ public class Restraurent {
             print(" 4. ADD ORDER\n");
             print(" 5. ORDERS HISTORY\n");
             print(" 6. VIEW ORDER\n");
+            print(" 7. Logout\n");
             printLine();
             print(" Enter your choice : ");
-            Integer choice = scan.nextInt();
-    
+            Integer choice = Integer.parseInt(scan.nextLine().toString());
+        
     //        PERFORM A PARTICULAR ACTION
             switch(choice) {
                 case 1: showAllUsers();
@@ -144,10 +154,20 @@ public class Restraurent {
                         break;
                 case 6: getOrder();
                         break;
+                case 7: logout();
+                        break;
                 default: print("ENTER A VALID INPUT\n");
                         break;
             }
         }
+    }
+
+    // LOGOUT THE CURRENT USER
+    public static void logout(){
+        notFirstTimeFailed = false;
+        isLoggedIn = false;
+        whoIsLogged.clear();
+        LoginMenu();
     }
 
     // SEE ALL THE ORDERS IN THE RECENT TO OLD ORDER
@@ -174,7 +194,7 @@ public class Restraurent {
     private static void getOrder(){
         print("ENTER THE ORDER ID :");
         int flag = 0;
-        Integer ID = scan.nextInt();
+        Integer ID = Integer.parseInt(scan.nextLine().toString());
         for(int i=0;i<orders.size();i++){
             if(orders.elementAt(i).orderID.equals(ID)){
                 currentOrder = orders.elementAt(i);
@@ -197,7 +217,7 @@ public class Restraurent {
                 print(" 5. Exit\n");
                 printLine();
                 print("Enter your choice : ");
-                choice = scan.nextInt();
+                choice = Integer.parseInt(scan.nextLine().toString());
                 // SWTICH THE CHOICES
                 switch(choice){
                     case 1: addOrderItem();
@@ -283,7 +303,7 @@ public class Restraurent {
             printLine();
             print(" Enter your choice : ");
             // INTEGER VALUE STORING THE CHOICE SELECTED BY THE USER
-            Integer choice = scan.nextInt();
+            Integer choice = Integer.parseInt(scan.nextLine().toString());
             switch(choice) {
                 // ADDING A SIZZLER TO THE MENU
                 case 1: Sizzlers sizzler = new Sizzlers();
@@ -387,7 +407,7 @@ public class Restraurent {
             print(" 5. Exit\n");
             printLine();
             print("Enter your choice : ");
-            choice = scan.nextInt();
+            choice = Integer.parseInt(scan.nextLine().toString());
             // SWTICH THE CHOICES
             switch(choice){
                 case 1: addOrderItem();
@@ -429,14 +449,14 @@ public class Restraurent {
         String ID;
         int flag = 0;
         print("ENTER THE ID OF THE ITEM : ");
-        ID = scan.next();
+        ID = scan.nextLine();
         for(int i=0;i<dishItems.length;i++){
             Vector<Dishes> item = Dishes.get(dishItems[i]);
             for(int j=0;j<item.size();j++){
                 if(item.elementAt(j).dishID.equals(ID)){
 
                     print("ENTER THE QUANTITY : ");
-                    Integer x = scan.nextInt();
+                    Integer x = Integer.parseInt(scan.nextLine().toString());
                     currentOrder.qty.add(x);
 
                     currentOrder.dishItems.add(item.elementAt(j));
@@ -461,7 +481,7 @@ public class Restraurent {
     public static void removeOrderItem(){
         String ID;
         print("ENTER THE ID OF ITEM TO REMOVE :");
-        ID = scan.next();
+        ID = scan.nextLine();
         int flag = 0;
 
         for(int i=0;i<currentOrder.dishItems.size();i++){
@@ -482,13 +502,13 @@ public class Restraurent {
     // PLACE THE CURRENT ORDER
     public static void placeTheOrder(){
         print("ENTER YOUR NAME :");
-        String name = scan.next();
+        String name = scan.nextLine();
         print("ENTER YOUR PHONE NUMBER : ");
-        String phone = scan.next();
+        String phone = scan.nextLine();
         currentOrder.phone = phone;
         currentOrder.name = name;
         print("ARE YOU SURE YOU WANT TO PLACE THE ORDER? (Y/N) ");
-        String ch = scan.next();
+        String ch = scan.nextLine();
         if(ch.equals("Y")){
             orders.add(currentOrder);
             print("TOTAL AMOUNT OF YOUR ORDER IS " + currentOrder.orderPrice  + "\n");
