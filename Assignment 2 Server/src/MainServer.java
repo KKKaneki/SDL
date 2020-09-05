@@ -262,7 +262,14 @@ public class MainServer {
                 }
                 System.out.println("Edit Previous Order request completed\n");
 
+            } else if(choice.equals(code.chat)){
+                System.out.println("Chat Box Request received\n");
+                ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+
+                Chat.chatWithClient(objectOutputStream,objectInputStream);
             }
+
+
 
             socket.close();
 

@@ -14,6 +14,7 @@ public class Code {
     public static Integer placeOrder;
     public static Integer orderHistory;
     public static Integer editOrder;
+    public static Integer chat;
 
 
     Code(){
@@ -32,5 +33,6 @@ public class Code {
         placeOrder = 12;
         orderHistory = 13;
         editOrder = 14;
+        chat=15;
     }
 }

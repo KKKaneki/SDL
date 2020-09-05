@@ -48,9 +48,9 @@ public class Options {
                 System.out.println(" 5. ORDERS HISTORY");
                 System.out.println(" 6. VIEW ORDER");
                 System.out.println(" 7. Logout");
-                System.out.print(" Enter your choice : \n");
+                System.out.println(" 8. Chat With Server\n");
+                System.out.print(" Enter your choice : ");
                 final Integer choice = Integer.parseInt(scan.nextLine());
-                System.out.println("Choice: " + choice);
                //PERFORM A PARTICULAR ACTION
                 switch(choice) {
                     case 1: showAllUsers();
@@ -66,6 +66,8 @@ public class Options {
                     case 6: getOrder();
                             break;
                     case 7: Login.logout();
+                            break;
+                    case 8: Chat.chatWithServer();
                             break;
                     default: System.out.println("ENTER A VALID INPUT\n");
                             break;
@@ -90,6 +92,7 @@ public class Options {
                 System.out.println(" 3. ORDERS HISTORY");
                 System.out.println(" 4. VIEW ORDER");
                 System.out.println(" 5. Logout");
+                System.out.println(" 6. Chat With Server\n");
                 System.out.println(" Enter your choice : ");
                 final Integer choice = Integer.parseInt(scan.nextLine().toString());
                 
@@ -104,6 +107,8 @@ public class Options {
                     case 4: getOrder();
                             break;
                     case 5: Login.logout();
+                            break;
+                    case 6: Chat.chatWithServer();
                             break;
                     default: System.out.println("ENTER A VALID INPUT\n");
                             break;
@@ -332,7 +337,7 @@ public class Options {
             System.out.println(" 3. See the Order");
             System.out.println(" 4. Place Order");
             System.out.println(" 5. Exit");
-            System.out.println("Enter your choice : ");
+            System.out.print("Enter your choice : ");
             choice = Integer.parseInt(scan.nextLine().toString());
             // SWTICH THE CHOICES
             switch(choice){
@@ -434,9 +439,9 @@ public class Options {
             System.out.println("Please enter at least one order item...");
         } else {
             try {
-                System.out.println("ENTER YOUR NAME :");
+                System.out.print("ENTER YOUR NAME :");
                 final String name = scan.nextLine();
-                System.out.println("ENTER YOUR PHONE NUMBER : ");
+                System.out.print("ENTER YOUR PHONE NUMBER : ");
                 final String phone = scan.nextLine();
                 currentOrder.phone = phone;
                 currentOrder.name = name;
