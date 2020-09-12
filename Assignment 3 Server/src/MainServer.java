@@ -1,11 +1,9 @@
-import java.io.DataInputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.net.*;
-import java.util.Hashtable;
-import java.util.Properties;
-import java.util.Vector;
+import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 
@@ -32,7 +30,7 @@ class OrdersHistory implements Serializable {
 }
 
 
-public class MainServer {
+public class MainServer implements Runnable {
     public static ServerSocket serverSocket;
     public static Socket socket;
     public static ObjectInputStream userObjectInputStream;
@@ -49,7 +47,7 @@ public class MainServer {
     public static RestraurentMenu restraurentMenu = new RestraurentMenu();
     public static String[] dishItems = {"SIZZLER", "SOUP","ROTI","MAINCOURSE","RICE","FRUITSALAD", "DESSERT","BEVERAGE"};
 
-
+    public static ExecutorService executorService;
 
 
     public static void main(String[] args){
@@ -59,23 +57,26 @@ public class MainServer {
 
             ordersHistory = new OrdersHistory();
 
+            
+
             addStaticUser();
             addMenuItems();
-            
+
+            // MULTI THREADING IN JAVE
+            executorService = Executors.newFixedThreadPool(5);
 
             // ESTABLISH A SERVER SOCKET PROGRAM
             serverSocket = new ServerSocket(8080);
-    
-                
-                while(true){
-                    getActiviyToPerform();
-                }
-              
-
-            } catch(Exception e){
-            e.printStackTrace();
+            while(true){
+                getActiviyToPerform();
+            }
+        } catch(Exception e){
+                e.printStackTrace();
         }
+    }
 
+    public void run(){
+        System.out.println("Thread running is : " + Thread.currentThread().getName());
     }
 
     public static void loginFunc(){
@@ -116,6 +117,8 @@ public class MainServer {
 
     public static void getActiviyToPerform(){
         try {
+            executorService.execute(new MainServer());
+
             System.out.println("Waiting For Client connection for Menu ...\n");
             socket = serverSocket.accept();
             System.out.println("Connection between Client And Server established for Menu...\n");
