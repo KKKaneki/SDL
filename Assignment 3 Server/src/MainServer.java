@@ -55,7 +55,7 @@ public class MainServer {
     public static RestraurentMenu restraurentMenu = new RestraurentMenu();
     public static String[] dishItems = {"SIZZLER", "SOUP","ROTI","MAINCOURSE","RICE","FRUITSALAD", "DESSERT","BEVERAGE"};
 
-
+    public static Thread x;
 
     public static ExecutorService executorService;
 
@@ -65,6 +65,8 @@ public class MainServer {
             registeredUsers.users = new Properties();
 
             ordersHistory = new OrdersHistory();
+
+            executorService = Executors.newFixedThreadPool(5);
 
             addStaticUser();
             addMenuItems();
@@ -127,12 +129,19 @@ public class MainServer {
         try {
             System.out.println("Waiting For Client connection for Menu ...\n");
             socket = serverSocket.accept();
-            System.out.println("Connection between Client And Server established for Menu...\n");
+            System.out.println("Connection between Client And Server established for Menu..." + socket + "\n");
 
             final Tasks tasks = new Tasks(socket);
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 
-            executorService.execute(tasks);
+            // executorService.execute(tasks);
+            System.out.println("Before Thread");
+
+            //  x = new Thread(tasks);
+            //  x.start();
+
+             executorService.execute(tasks);
+
 
 
 
@@ -277,11 +286,16 @@ public class MainServer {
             } else if(choice.equals(code.chat)){
                 System.out.println("Chat Box Request received\n");
                 final ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+                System.out.println("Thread Running : " + Thread.currentThread().getName());
 
-                Chat.chatWithClient(objectOutputStream,objectInputStream);
+                ClientHandler client = new ClientHandler(objectInputStream,objectOutputStream);
+                // new Thread(client).start();
+                // System.out.println("Thread Running : " + Thread.currentThread().getName());
+                Chat chat = new Chat(objectOutputStream,objectInputStream);
+                chat.chatWithClient(socket,serverSocket);
             }           
-            
-            System.out.println("Reaches");
+            //x.interrupt();
+         
             //socket.close();
         } catch(final Exception e){
             e.printStackTrace();
