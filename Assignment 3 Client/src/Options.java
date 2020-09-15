@@ -521,6 +521,8 @@ public class Options {
 
             System.out.println("ENTER THE ORDER ID :");
             int flag = 0;
+
+
             ID = Integer.parseInt(scan.nextLine().toString());
             for(int i=0;i<orders.orders.size();i++){
                 if(orders.orders.elementAt(i).orderID.equals(ID)){
@@ -582,9 +584,5 @@ public class Options {
             e.printStackTrace();
         }
     }
-
-
-   
-
 
 }

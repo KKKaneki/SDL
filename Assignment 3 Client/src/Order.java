@@ -14,8 +14,5 @@ public class Order implements Serializable{
     Order(){
         orderPrice = 0f;
     }
-    
-    public static void addNewOrder(){
-        
-    }
+ 
 }

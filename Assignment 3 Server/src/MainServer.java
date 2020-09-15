@@ -6,9 +6,12 @@ import java.net.*;
 import java.util.Hashtable;
 import java.util.Properties;
 import java.util.Vector;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
+import com.mysql.jdbc.ConnectionImpl.ExceptionInterceptorChain;
 
 import java.sql.*;
 
@@ -82,6 +85,9 @@ public class MainServer {
 
             addStaticUser();
             addMenuItems();
+            createOrderDatabase();
+            createChatTable();
+
 
             // ESTABLISH A SERVER SOCKET PROGRAM
             serverSocket = new ServerSocket(8080);
@@ -191,7 +197,7 @@ public class MainServer {
                 loginFunc(objectOutputStream);
             } else if (choice.equals(code.getRegisteredUsers)) {
                 System.out.println("Request for all users from client\n");
-
+                getUserFromDatabase();
                 objectOutputStream.writeObject(registeredUsers);
 
                 System.out.println("All Users request completed\n");
@@ -199,18 +205,23 @@ public class MainServer {
             } else if (choice.equals(code.getMenu)) {
                 System.out.println("Request for Food Menu from client\n");
 
+                getMenuFromDatabase();
                 objectOutputStream.writeObject(restraurentMenu);
 
                 System.out.println("Food Menu request completed\n");
                 socket.close();
-
             } else if (choice.equals(code.addSizzler)) {
                 System.out.println("Request Add Sizzler from client\n");
 
                 final ObjectInputStream dishFromClient = new ObjectInputStream(socket.getInputStream());
                 final Dishes dish = (Dishes) dishFromClient.readObject();
 
-                restraurentMenu.Dishes.get(dishItems[0]).add(dish);
+                // CREATE A QUERY FOR INSERTION
+                String insertSizzler = "INSERT INTO dishes VALUES(NULL,1,'" + dish.nameOfItem + "'," + dish.price + ");";
+                stmt.executeUpdate(insertSizzler);
+
+                getMenuFromDatabase();
+                TimeUnit.SECONDS.sleep(1);
 
                 System.out.println("Add Sizzler request completed\n");
 
@@ -220,7 +231,13 @@ public class MainServer {
                 final ObjectInputStream dishFromClient = new ObjectInputStream(socket.getInputStream());
                 final Dishes dish = (Dishes) dishFromClient.readObject();
 
-                restraurentMenu.Dishes.get(dishItems[1]).add(dish);
+                // CREATE A QUERY FOR INSERTION
+                String insertQuery = "INSERT INTO dishes VALUES(NULL,2,'" + dish.nameOfItem + "'," + dish.price + ");";
+                stmt.executeUpdate(insertQuery);
+
+                getMenuFromDatabase();
+                TimeUnit.SECONDS.sleep(1);
+
                 System.out.println("Add Soup request completed\n");
 
             } else if (choice.equals(code.addRoti)) {
@@ -229,7 +246,13 @@ public class MainServer {
                 final ObjectInputStream dishFromClient = new ObjectInputStream(socket.getInputStream());
                 final Dishes dish = (Dishes) dishFromClient.readObject();
 
-                restraurentMenu.Dishes.get(dishItems[2]).add(dish);
+                 // CREATE A QUERY FOR INSERTION
+                 String insertQuery = "INSERT INTO dishes VALUES(NULL,3,'" + dish.nameOfItem + "'," + dish.price + ");";
+                 stmt.executeUpdate(insertQuery);
+ 
+                 getMenuFromDatabase();
+                 TimeUnit.SECONDS.sleep(1);
+
                 System.out.println("Add Roti request completed\n");
 
             } else if (choice.equals(code.addMainCourse)) {
@@ -238,7 +261,13 @@ public class MainServer {
                 final ObjectInputStream dishFromClient = new ObjectInputStream(socket.getInputStream());
                 final Dishes dish = (Dishes) dishFromClient.readObject();
 
-                restraurentMenu.Dishes.get(dishItems[3]).add(dish);
+                 // CREATE A QUERY FOR INSERTION
+                 String insertQuery = "INSERT INTO dishes VALUES(NULL,4,'" + dish.nameOfItem + "'," + dish.price + ");";
+                 stmt.executeUpdate(insertQuery);
+ 
+                 getMenuFromDatabase();
+                 TimeUnit.SECONDS.sleep(1);
+
                 System.out.println("Add Main Course request completed\n");
 
             } else if (choice.equals(code.addRice)) {
@@ -247,7 +276,13 @@ public class MainServer {
                 final ObjectInputStream dishFromClient = new ObjectInputStream(socket.getInputStream());
                 final Dishes dish = (Dishes) dishFromClient.readObject();
 
-                restraurentMenu.Dishes.get(dishItems[4]).add(dish);
+                 // CREATE A QUERY FOR INSERTION
+                 String insertQuery = "INSERT INTO dishes VALUES(NULL,5,'" + dish.nameOfItem + "'," + dish.price + ");";
+                 stmt.executeUpdate(insertQuery);
+ 
+                 getMenuFromDatabase();
+                 TimeUnit.SECONDS.sleep(1);
+
                 System.out.println("Add Rice request completed\n");
 
             } else if (choice.equals(code.addFruitSalad)) {
@@ -256,7 +291,13 @@ public class MainServer {
                 final ObjectInputStream dishFromClient = new ObjectInputStream(socket.getInputStream());
                 final Dishes dish = (Dishes) dishFromClient.readObject();
 
-                restraurentMenu.Dishes.get(dishItems[5]).add(dish);
+                 // CREATE A QUERY FOR INSERTION
+                 String insertQuery = "INSERT INTO dishes VALUES(NULL,6,'" + dish.nameOfItem + "'," + dish.price + ");";
+                 stmt.executeUpdate(insertQuery);
+ 
+                 getMenuFromDatabase();
+                 TimeUnit.SECONDS.sleep(1);
+
                 System.out.println("Add Fruit Salad request completed\n");
 
             } else if (choice.equals(code.addDessert)) {
@@ -266,7 +307,13 @@ public class MainServer {
                 final Dishes dish = (Dishes) dishFromClient.readObject();
                 System.out.println(dish.nameOfItem);
 
-                restraurentMenu.Dishes.get(dishItems[6]).add(dish);
+                 // CREATE A QUERY FOR INSERTION
+                 String insertQuery = "INSERT INTO dishes VALUES(NULL,7,'" + dish.nameOfItem + "'," + dish.price + ");";
+                 stmt.executeUpdate(insertQuery);
+ 
+                 getMenuFromDatabase();
+                 TimeUnit.SECONDS.sleep(1);
+
                 System.out.println("Add Dessert request completed\n");
 
             } else if (choice.equals(code.addBeverage)) {
@@ -274,23 +321,33 @@ public class MainServer {
 
                 final ObjectInputStream dishFromClient = new ObjectInputStream(socket.getInputStream());
                 final Dishes dish = (Dishes) dishFromClient.readObject();
-                System.out.println(dish.nameOfItem);
+                
+                 // CREATE A QUERY FOR INSERTION
+                 String insertQuery = "INSERT INTO dishes VALUES(NULL,8,'" + dish.nameOfItem + "'," + dish.price + ");";
+                 stmt.executeUpdate(insertQuery);
+ 
+                 getMenuFromDatabase();
+                 TimeUnit.SECONDS.sleep(1);
 
-                restraurentMenu.Dishes.get(dishItems[7]).add(dish);
                 System.out.println("Add Beverage request completed\n");
 
             } else if (choice.equals(code.placeOrder)) {
                 System.out.println("Request Place Order from client\n");
 
                 final ObjectInputStream orderFromClient = new ObjectInputStream(socket.getInputStream());
-                final Order currentOrder = (Order) orderFromClient.readObject();
+                Order currentOrder = (Order) orderFromClient.readObject();
 
-                ordersHistory.orders.add(currentOrder);
+                
+                insertOrderIntoDatabase(currentOrder);
+
+
                 System.out.println("Place Order request completed\n");
                 socket.close();
 
             } else if (choice.equals(code.orderHistory)) {
                 System.out.println("Request Order History from client\n");
+
+                getOrderHistoryFromDatabase();
 
                 objectOutputStream.writeObject(ordersHistory);
                 System.out.println("Order History request completed\n");
@@ -301,13 +358,11 @@ public class MainServer {
                 final ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 final Order editedOrder = (Order) ois.readObject();
 
-                for (int i = 0; i < ordersHistory.orders.size(); i++) {
-                    if (ordersHistory.orders.get(i).orderID.equals(editedOrder.orderID)) {
-                        ordersHistory.orders.remove(i);
-                        ordersHistory.orders.add(i, editedOrder);
-                        break;
-                    }
-                }
+                // DELETE QUERY
+                stmt.executeUpdate("DELETE FROM orders WHERE order_id=" + editedOrder.orderID);
+
+                insertOrderIntoDatabase(editedOrder);
+                
                 System.out.println("Edit Previous Order request completed\n");
 
             } else if (choice.equals(code.chat)) {
@@ -332,97 +387,102 @@ public class MainServer {
    
 
     public static void addMenuItems(){
-        // SIZZLERS
-        final String[] SIZZLERS = {"Veg Tawa Sizzler","Veg Ala Kiev Sizzler","Soya Chaap Sizzler","Cheese Cutlet Sizzler"};
-        final Float[] SIZZLERPRICE = {600f,600f,650f,600f};
-        restraurentMenu.Dishes.put(dishItems[0], new Vector<Dishes>());
-        for(int i=0;i<SIZZLERS.length;i++){
-            final Dishes dish = new Dishes();
-            dish.nameOfItem=SIZZLERS[i];
-            dish.price=SIZZLERPRICE[i];
-            restraurentMenu.Dishes.get(dishItems[0]).add(dish);
-        }
+        try {
+            // DROP THE TABLE CONTAINING ALL THE SUBCATEGORIES eg. ROTI,SIZZLER etc
+            stmt.executeUpdate("DROP TABLE IF EXISTS sub_categories,dishes,orders,order_item;");
 
-        // SOUP
-        final String[] SOUP = {"Tomato Soup","Palak Soup","Manchaw Soup","Sweet Corn Soup"};
-        final Float[] SOUPPRICE = {80f,80f,95f,95f};
-        restraurentMenu.Dishes.put(dishItems[1], new Vector<Dishes>());
-        for(int i=0;i<SOUP.length;i++){
-            final Dishes dish = new Dishes();
-            dish.nameOfItem=SOUP[i];
-            dish.price=SOUPPRICE[i];
-            restraurentMenu.Dishes.get(dishItems[1]).add(dish);
-        }
+            stmt.executeUpdate("CREATE TABLE sub_categories (cat_id INT AUTO_INCREMENT PRIMARY KEY,cat_name VARCHAR(100) NOT NULL);");
+            // ADD ALL THE SUB CATEGORIES TO THE TABLE
+            for( int i = 0 ; i < dishItems.length; i++) {
+                String insertDishSubCategory = "INSERT INTO sub_categories VALUES(NULL,'" + dishItems[i] + "');";
+                stmt.executeUpdate(insertDishSubCategory);
+            }
+            System.out.println("Dish Sub Items inserted\n");
+
+
+
+            // DROP A TABLE IF EXISTS WITH 
+            //stmt.executeUpdate("DROP TABLE IF EXISTS dishes;");
+
+            // CREATE TABLE DISHES
+            stmt.executeUpdate("CREATE TABLE dishes (dish_id INT NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,cat_id INT, dish_name VARCHAR(100) UNIQUE, dish_price FLOAT NOT NULL,FOREIGN KEY(cat_id) REFERENCES sub_categories(cat_id) ON DELETE CASCADE);");
+            // stmt.executeUpdate("ALTER TABLE dishes ADD FOREIGN KEY(cat_id) REFERENCES sub_categories(cat_id);");
+
+            System.out.println("DISHES DATA HAS BEEN CREATED\n");
+
+
+            final String[] SIZZLERS = {"Veg Tawa Sizzler","Veg Ala Kiev Sizzler","Soya Chaap Sizzler","Cheese Cutlet Sizzler"};
+            final Float[] SIZZLERPRICE = {600f,600f,650f,600f};
+            for(int i=0;i<SIZZLERS.length;i++){
+                String sizQuery = "INSERT INTO dishes VALUES(NULL,1,'" + SIZZLERS[i] + "'," + SIZZLERPRICE[i] + ");";
+                stmt.executeUpdate(sizQuery);
+            }
+
+
+           
+            // SOUP
+            final String[] SOUP = {"Tomato Soup","Palak Soup","Manchaw Soup","Sweet Corn Soup"};
+            final Float[] SOUPPRICE = {80f,80f,95f,95f};
+            for(int i=0;i<SOUP.length;i++){
+                String soupQuery = "INSERT INTO dishes VALUES(NULL,2,'" + SOUP[i] + "'," + SOUPPRICE[i] + ");";
+                stmt.executeUpdate(soupQuery);
+            }
+
+            final String[] ROTI = {"Roti","ButterRoti","Naan","Butter Naan","Paratha","Butter Paratha","Chapati","Butter Chapati"};
+            final Float[] ROTIPRICE = {15f,20f,25f,30f,25f,30f,10f,15f};
+            for(int i=0;i<ROTI.length;i++){
+                String rotiQuery = "INSERT INTO dishes VALUES(NULL,3,'" + ROTI[i] + "'," + ROTIPRICE[i] + ");";
+                stmt.executeUpdate(rotiQuery);
+            }
         
-
-        // ROTI
-        final String[] ROTI = {"Roti","ButterRoti","Naan","Butter Naan","Paratha","Butter Paratha","Chapati","Butter Chapati"};
-        final Float[] ROTIPRICE = {15f,20f,25f,30f,25f,30f,10f,15f};
-        restraurentMenu.Dishes.put(dishItems[2], new Vector<Dishes>());
-        for(int i=0;i<ROTI.length;i++){
-            final Dishes dish = new Dishes();
-            dish.nameOfItem=ROTI[i];
-            dish.price=ROTIPRICE[i];
-            restraurentMenu.Dishes.get(dishItems[2]).add(dish);
-        }
-        
-        // MAIN COURSE
-        final String[] MAINCOURSE = {"Veg Machurian","Paneer Machurian","Veg Schezwan","Paneer Chilly","Veg Crispy"};
-        final Float[] MAINCOURSEPRICE = {150f,170f,170f,170f,160f};
-        restraurentMenu.Dishes.put(dishItems[3], new Vector<Dishes>());
-        for(int i=0;i<MAINCOURSE.length;i++){
-            final Dishes dish = new Dishes();
-            dish.nameOfItem=MAINCOURSE[i];
-            dish.price=MAINCOURSEPRICE[i];
-            restraurentMenu.Dishes.get(dishItems[3]).add(dish);
-        }
-        
-
-        // RICE
-        final String[] RICE = {"Veg Biryani","Paneer Biryani","Hyderabadi Biryani","Veg Pulav"};
-        final Float[] RICEPRICE = {150f,170f,170f,150f};
-        restraurentMenu.Dishes.put(dishItems[4], new Vector<Dishes>());
-        for(int i=0;i<RICE.length;i++){
-            final Dishes dish = new Dishes();
-            dish.nameOfItem=RICE[i];
-            dish.price=RICEPRICE[i];
-            restraurentMenu.Dishes.get(dishItems[4]).add(dish);
-        }
-
-        // FRUIT SALAD
-        final String[] FRUITSALAD = {"Green Salad","Cheese Cherry Pineapple"};
-        final Float[] FRUITSALADPRICE = {90f,135f};
-        restraurentMenu.Dishes.put(dishItems[5], new Vector<Dishes>());
-        for(int i=0;i<FRUITSALAD.length;i++){
-            final Dishes dish = new Dishes();
-            dish.nameOfItem=FRUITSALAD[i];
-            dish.price=FRUITSALADPRICE[i];
-            restraurentMenu.Dishes.get(dishItems[5]).add(dish);
-        }
-        
-        // DESSERT
-        final String[] DESSERT = {"Vanilla Ice Cream","Mango Ice Cream","Strawberry Ice Cream","Chocolate Ice Cream"};
-        final Float[] DESSERTPRICE = {30f,35f,30f,45f};
-        restraurentMenu.Dishes.put(dishItems[6], new Vector<Dishes>());
-        for(int i=0;i<DESSERT.length;i++){
-            final Dishes dish = new Dishes();
-            dish.nameOfItem=DESSERT[i];
-            dish.price=DESSERTPRICE[i];
-            restraurentMenu.Dishes.get(dishItems[6]).add(dish);
-        }
+            // MAIN COURSE
+            final String[] MAINCOURSE = {"Veg Machurian","Paneer Machurian","Veg Schezwan","Paneer Chilly","Veg Crispy"};
+            final Float[] MAINCOURSEPRICE = {150f,170f,170f,170f,160f};
+            for(int i=0;i<MAINCOURSE.length;i++){
+                String mainCourseQuery = "INSERT INTO dishes VALUES(NULL,4,'" + MAINCOURSE[i] + "'," + MAINCOURSEPRICE[i] + ");";
+                stmt.executeUpdate(mainCourseQuery);
+            }
 
 
-        // BEVERAGE
-        final String[] BEVERAGE = {"Fresh Lime Juice","Fresh Lime Soda","Soft Drinks","Mango Lassi"};
-        final Float[] BEVERAGEPRICE = {50f,60f,30f,20f};
-        restraurentMenu.Dishes.put(dishItems[7], new Vector<Dishes>());
-        for(int i=0;i<BEVERAGE.length;i++){
-            final Dishes dish = new Dishes();
-            dish.nameOfItem=BEVERAGE[i];
-            dish.price=BEVERAGEPRICE[i];
-            restraurentMenu.Dishes.get(dishItems[7]).add(dish);
-        }
+            final String[] RICE = {"Veg Biryani","Paneer Biryani","Hyderabadi Biryani","Veg Pulav"};
+            final Float[] RICEPRICE = {150f,170f,170f,150f};
+            for(int i=0;i<RICE.length;i++){
+                String riceQuery = "INSERT INTO dishes VALUES(NULL,5,'" + RICE[i] + "'," + RICEPRICE[i] + ");";
+                stmt.executeUpdate(riceQuery);
+            }
 
+
+            // FRUIT SALAD
+            final String[] FRUITSALAD = {"Green Salad","Cheese Cherry Pineapple"};
+            final Float[] FRUITSALADPRICE = {90f,135f};
+            for(int i=0;i<FRUITSALAD.length;i++){
+                String fruitSaladQuery = "INSERT INTO dishes VALUES(NULL,6,'" + FRUITSALAD[i] + "'," + FRUITSALADPRICE[i] + ");";
+                stmt.executeUpdate(fruitSaladQuery);
+            }
+
+            // DESSERT
+            final String[] DESSERT = {"Vanilla Ice Cream","Mango Ice Cream","Strawberry Ice Cream","Chocolate Ice Cream"};
+            final Float[] DESSERTPRICE = {30f,35f,30f,45f};
+            for(int i=0;i<DESSERT.length;i++){
+                String dessertQuery = "INSERT INTO dishes VALUES(NULL,7,'" + DESSERT[i] + "'," + DESSERTPRICE[i] + ");";
+                stmt.executeUpdate(dessertQuery);
+            }
+
+            final String[] BEVERAGE = {"Fresh Lime Juice","Fresh Lime Soda","Soft Drinks","Mango Lassi"};
+            final Float[] BEVERAGEPRICE = {50f,60f,30f,20f};
+            for(int i=0;i<BEVERAGE.length;i++){
+                String beverageQuery = "INSERT INTO dishes VALUES(NULL,8,'" + BEVERAGE[i] + "'," + BEVERAGEPRICE[i] + ");";
+                stmt.executeUpdate(beverageQuery);
+            }
+
+
+
+            getMenuFromDatabase();
+
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -452,5 +512,140 @@ public class MainServer {
         } catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public static void getUserFromDatabase(){
+        try {   
+            ResultSet rs = stmt.executeQuery("SELECT * FROM users;");
+            while(rs.next()){
+                registeredUsers.users.setProperty(rs.getString("user_name"),rs.getString("user_password"));
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void getMenuFromDatabase(){
+        try {
+            ResultSet rs = stmt.executeQuery("SELECT * FROM sub_categories;");
+            String[] subCat = new String[20];
+            Integer[] subId = new Integer[20];
+            int i = 0;
+            while(rs.next()){
+                subCat[i] =  String.valueOf(rs.getString("cat_name"));
+                subId[i++] = rs.getInt("cat_id");
+            }
+
+            for(int j = 0 ; j < i ; j++){
+
+                restraurentMenu.Dishes.put(subCat[j], new Vector<Dishes>());
+
+                ResultSet rsDish = stmt.executeQuery("SELECT * FROM dishes WHERE cat_id=" + subId[j] + ";");
+
+                while(rsDish.next()){
+                    Dishes dish = new Dishes();
+                    dish.dishID = String.valueOf(rsDish.getInt("dish_id"));
+                    dish.nameOfItem = rsDish.getString("dish_name");
+                    dish.price = rsDish.getFloat("dish_price");
+                    restraurentMenu.Dishes.get(subCat[j]).add(dish);
+                }  
+            }
+
+            // System.out.println(restraurentMenu.Dishes.get("ROTI").firstElement().nameOfItem);
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void createOrderDatabase(){
+        try {
+            stmt.executeUpdate("DROP TABLE IF EXISTS orders,order_item");
+            stmt.executeUpdate("CREATE TABLE orders ( order_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,order_price FLOAT NOT NULL,name VARCHAR(100),phone VARCHAR(100));");
+
+            stmt.executeUpdate("CREATE TABLE order_item(order_id INT,dish_id INT, qty INT,FOREIGN KEY(order_id) REFERENCES orders(order_id) ON DELETE CASCADE ON UPDATE CASCADE,FOREIGN KEY(dish_id) REFERENCES dishes(dish_id) ON DELETE CASCADE ON UPDATE CASCADE);");
+        
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void getOrderHistoryFromDatabase(){
+        try {
+            ordersHistory = new OrdersHistory();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM orders NATURAL JOIN order_item NATURAL JOIN dishes;");
+            while(rs.next()){
+                int orderID = rs.getInt("order_id");
+                int idx = -1;
+                for (int i = 0 ; i < ordersHistory.orders.size() ; i++){
+                    if(ordersHistory.orders.get(i).orderID == orderID) {
+                        idx = i;
+                    } 
+                }
+
+                if(idx == -1){
+                    Order order = new Order();
+                    order.orderID = rs.getInt("order_id");
+                    order.name = rs.getString("name");
+                    order.orderPrice = rs.getFloat("order_price");
+                    order.phone = rs.getString("phone");
+                    Dishes dish = new Dishes();
+                    dish.dishID = String.valueOf(rs.getInt("dish_id"));
+                    dish.nameOfItem = rs.getString("dish_name");
+                    dish.price = rs.getFloat("dish_price");
+                    order.dishItems.add(dish);
+                    order.qty.add(rs.getInt("qty"));
+                    ordersHistory.orders.add(order);
+                } else {
+                    Dishes dish = new Dishes();
+                    dish.dishID = String.valueOf(rs.getInt("dish_id"));
+                    dish.nameOfItem = rs.getString("dish_name");
+                    dish.price = rs.getFloat("dish_price");
+                    ordersHistory.orders.get(idx).dishItems.add(dish);
+                    ordersHistory.orders.get(idx).qty.add(rs.getInt("qty"));
+                }
+
+            }
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public static void insertOrderIntoDatabase(Order currentOrder){
+        try {
+            // CREATE ORDER QUERY
+            String orderQuery = "INSERT INTO orders VALUES (NULL," + currentOrder.orderPrice + ",'" + currentOrder.name + "'," + currentOrder.phone + ");";
+            stmt.executeUpdate(orderQuery);
+
+            String getOrderId = "SELECT order_id,MAX(order_id) FROM orders WHERE order_price=" + currentOrder.orderPrice + " AND name='" + currentOrder.name + "' AND phone=" + currentOrder.phone + ";";
+            ResultSet rs = stmt.executeQuery(getOrderId);
+            int orderNo;
+            if(rs.next()){
+                orderNo = rs.getInt("order_id");
+                
+                for(int i = 0 ; i < currentOrder.dishItems.size(); i++ ) {
+                    String orderItem = "INSERT INTO order_item VALUES(" + orderNo + "," + currentOrder.dishItems.get(i).dishID + "," + currentOrder.qty.get(i) + ");";
+                    stmt.executeUpdate(orderItem);
+                }
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void createChatTable(){
+        try {
+            stmt.executeUpdate("DROP TABLE IF EXISTS chatTable,messageTable;");
+            stmt.executeUpdate("CREATE TABLE chatTable(chat_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,client VARCHAR(100));");
+            stmt.executeUpdate("CREATE TABLE messageTable(chat_id INT,message VARCHAR(255),server_message VARCHAR(255),time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY(chat_id) REFERENCES chatTable(chat_id));");
+            
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+       
     }
 }
