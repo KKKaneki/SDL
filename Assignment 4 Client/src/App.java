@@ -4,7 +4,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import java.io.*;
+import java.util.*;
+
 import java.awt.event.*;
+import java.util.BitSet;
 
 public class App implements ActionListener {
     public static JFrame frame;
@@ -15,6 +19,23 @@ public class App implements ActionListener {
 
     public static void main(String[] args) throws Exception {
        new App();
+
+
+       try {
+
+//			INITIALIZE THE SCANNER
+            Scanner scan = new Scanner(System.in);
+            
+            Login.isLoggedIn = false;
+            Login.whoIsLogged = new BitSet(2);
+            Login.whoIsLogged.clear();
+            
+        
+        
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     App(){
