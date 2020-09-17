@@ -17,22 +17,19 @@ public class App implements ActionListener {
     JPasswordField passwordField;
     JButton loginBtn;
 
+    LoginUser loggedInUser = new LoginUser();
+
     public static void main(String[] args) throws Exception {
        new App();
 
 
        try {
-
 //			INITIALIZE THE SCANNER
-            Scanner scan = new Scanner(System.in);
-            
+            Scanner scan = new Scanner(System.in);     
             Login.isLoggedIn = false;
             Login.whoIsLogged = new BitSet(2);
             Login.whoIsLogged.clear();
-            
-        
-        
-            
+         
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -41,25 +38,25 @@ public class App implements ActionListener {
     App(){
          // CREATE THE MAIN FRAME
          frame = new JFrame();
-         frame.setSize(1980,1000);
+         frame.setSize(600,500);
          // INITIALIZE THE LOGIN SCREEN
   
         welcomeLabel = new JLabel();
         welcomeLabel.setText("Welcome to the ABC Restraurent App");
-        welcomeLabel.setBounds(795, 100, 600, 400);
+        welcomeLabel.setBounds(175, 10, 600, 200);
         frame.add(welcomeLabel);
    
 
         // INITIALIZE THE USERNAME AND PASSWORD TEST FIELDS
         usernameLabel = new JLabel("Username :");
-        usernameLabel.setBounds(750,330,400,19);
+        usernameLabel.setBounds(120,130,400,19);
         usernameField = new JTextField();
-        usernameField.setBounds(750, 350, 400, 35);
+        usernameField.setBounds(120, 150, 400, 35);
 
         passwordLabel = new JLabel("Password :");
-        passwordLabel.setBounds(750,390,400,20);
+        passwordLabel.setBounds(120,190,400,20);
         passwordField = new JPasswordField();
-        passwordField.setBounds(750, 410, 400, 35);
+        passwordField.setBounds(120, 210, 400, 35);
 
         frame.add(usernameLabel);
         frame.add(passwordLabel);
@@ -69,22 +66,31 @@ public class App implements ActionListener {
 
         // LOGIN BTN
         loginBtn = new JButton("Login");
-        loginBtn.setBounds(900,470,100,30);
+        loginBtn.setBounds(260,260,100,30);
         loginBtn.addActionListener(this);
         frame.add(loginBtn);
 
-        frame.setLayout(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+        while(!Login.isLoggedIn) {
+            frame.setLayout(null);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setVisible(true);
+        }
+        loggedInUser.USERNAME = usernameField.getText();
+        loggedInUser.PASSWORD = String.valueOf(passwordField.getPassword());
+
+        // DISPOSE THIS FRAME WHEN LOGGED IN AND MAKE ANOTHER FRAME
+        frame.dispose();
+        new Menu(loggedInUser);
+        
     }
 
     public void actionPerformed(ActionEvent e){
+            
+            String username = usernameField.getText();
+            String password = String.valueOf(passwordField.getPassword());
 
-        String username = usernameField.getText();
-        String password = String.valueOf(passwordField.getPassword());
-
-        LoginClass login = new LoginClass(username,password);
-        login.attemptLogin();
+            LoginClass login = new LoginClass(username,password);
+            login.attemptLogin();
     
     }
 }

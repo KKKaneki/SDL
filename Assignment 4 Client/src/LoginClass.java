@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import javax.swing.*;
 
 class LoginUser implements Serializable {
     String USERNAME;
@@ -16,18 +17,21 @@ public class LoginClass {
     }
 
     public void attemptLogin(){
-
-        // GET THE LOGIN
-        Login.getLoginMenu(user);
-        System.out.println(user.PASSWORD + " " + user.USERNAME);
-        if(Login.isLoggedIn) {
-            if(Login.whoIsLogged.get(0)) {
-                System.out.println("ADMIN has logged in.\n");
+        JOptionPane jPane = new JOptionPane();
+            // GET THE LOGIN
+            Login.getLoginMenu(user);
+            System.out.println(user.PASSWORD + " " + user.USERNAME);
+            if(Login.isLoggedIn) {
+                if(Login.whoIsLogged.get(0)) {
+                    jPane.showMessageDialog(App.frame, "ADMIN logged in successfully!!", "Correct Credentials", JOptionPane.INFORMATION_MESSAGE);
+                    System.out.println("ADMIN has logged in.\n");
+                } else {
+                    jPane.showMessageDialog(App.frame, "Logged in successfully!!", "Correct Credentials", JOptionPane.INFORMATION_MESSAGE);
+                    System.out.println("Staff has logged in.\n");
+                }
             } else {
-                System.out.println("Staff has logged in.\n");
+                jPane.showMessageDialog(App.frame, "Unsuccessfully Login !!", "Incorrect Credentials", JOptionPane.ERROR_MESSAGE);
+                System.out.println("Login Unsuccessfull\n");
             }
-        } else {
-            System.out.println("Login Unsuccessfull\n");
-        }
     }
 }

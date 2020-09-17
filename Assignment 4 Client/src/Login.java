@@ -21,7 +21,7 @@ public class Login {
     
     
     // CHECK IF ADMIN
-    public static BitSet whoIsLogged;
+    public static BitSet whoIsLogged = new BitSet(2);
 
 
 // 	public static void main(String[] args) {
@@ -49,7 +49,6 @@ public class Login {
         try {
 
             // RUNS TILL THE USER IS NOT LOGGED IN
-           while(!isLoggedIn){
                socket = new Socket("localhost",8080);
 
                DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
@@ -77,6 +76,8 @@ public class Login {
             
                
             //    INITIALIZE ISADMIN
+               System.out.print(response.success);
+    
                if(response.success == true && response.msg.equals("ADMIN")) whoIsLogged.set(0);
                else if(response.success) whoIsLogged.set(1);
 
@@ -84,15 +85,14 @@ public class Login {
                    isLoggedIn = true;
                    System.out.println("Logged in successfully\n");
 
-                   Options option = new Options();
+                   //Options option = new Options();
                    // CHECK IF ADMIN
-                   if(isLoggedIn && whoIsLogged.get(0)) option.getAdminMenu();
-                   else option.getUserMenu(); 
+                //    if(isLoggedIn && whoIsLogged.get(0)) option.getAdminMenu();
+                //    else option.getUserMenu(); 
                }
 
                //WHEN THE USERNAME AND THE PASSWORD EXISTS
                userObjectInputStream.close();
-            }
 
 
         } catch(Exception e){
