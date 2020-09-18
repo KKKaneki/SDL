@@ -16,21 +16,21 @@ public class LoginClass {
         user.PASSWORD = password;
     }
 
-    public void attemptLogin(){
+    public void attemptLogin(JFrame frame){
         JOptionPane jPane = new JOptionPane();
             // GET THE LOGIN
             Login.getLoginMenu(user);
             System.out.println(user.PASSWORD + " " + user.USERNAME);
             if(Login.isLoggedIn) {
                 if(Login.whoIsLogged.get(0)) {
-                    jPane.showMessageDialog(App.frame, "ADMIN logged in successfully!!", "Correct Credentials", JOptionPane.INFORMATION_MESSAGE);
+                    jPane.showMessageDialog(frame, "ADMIN logged in successfully!!", "Correct Credentials", JOptionPane.INFORMATION_MESSAGE);
                     System.out.println("ADMIN has logged in.\n");
                 } else {
-                    jPane.showMessageDialog(App.frame, "Logged in successfully!!", "Correct Credentials", JOptionPane.INFORMATION_MESSAGE);
+                    jPane.showMessageDialog(frame, "Logged in successfully!!", "Correct Credentials", JOptionPane.INFORMATION_MESSAGE);
                     System.out.println("Staff has logged in.\n");
                 }
             } else {
-                jPane.showMessageDialog(App.frame, "Unsuccessfully Login !!", "Incorrect Credentials", JOptionPane.ERROR_MESSAGE);
+                jPane.showMessageDialog(frame, "Unsuccessfully Login !!", "Incorrect Credentials", JOptionPane.ERROR_MESSAGE);
                 System.out.println("Login Unsuccessfull\n");
             }
     }

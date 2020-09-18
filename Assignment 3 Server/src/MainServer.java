@@ -70,7 +70,7 @@ public class MainServer {
             // connection to the database
             System.out.println("Connecting to the database...");
             Class.forName("com.mysql.jdbc.Driver");
-            con = (Connection)  DriverManager.getConnection("jdbc:mysql://localhost:3306/sdl_restraurent?autoReconnect=true&useSSL=false", "root", "root");
+            con = (Connection)  DriverManager.getConnection("jdbc:mysql://localhost:3306/sdl_restraurent?autoReconnect=true&useSSL=false&allowPublicRetrieval=true", "root", "root");
             stmt = con.createStatement();
             System.out.println("Connected to database....");
 
