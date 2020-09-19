@@ -79,7 +79,7 @@ public class MainServer {
 
             ordersHistory = new OrdersHistory();
 
-            executorService = Executors.newFixedThreadPool(5);
+            // executorService = Executors.newFixedThreadPool(5);
 
             addStaticUser();
             addMenuItems();

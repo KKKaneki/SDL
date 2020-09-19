@@ -65,11 +65,12 @@ public class Chat {
                 ResultSet rs = stmt.executeQuery("SELECT * FROM chatTable WHERE client='" + clientMessage.name + "';");
 
                 if(rs.next()){
+                        System.out.println(clientMessage.name);
                         int id = rs.getInt("chat_id");
                         stmt.executeUpdate("INSERT INTO messageTable VALUES (" + id + ",'" + clientMessage.msg + "','" + message.msg + "',CURTIME());");
                 } else {
                     stmt.executeUpdate("INSERT INTO chatTable VALUES(NULL,'" + clientMessage.name + "');");
-                    ResultSet r = stmt.executeQuery("SELECT chat_id,MAX(chat_id) FROM chatTable;");
+                    ResultSet r = stmt.executeQuery("SELECT chat_id FROM chatTable ORDER BY chat_id DESC LIMIT 1;");
                     if(r.next()){
                         stmt.executeUpdate("INSERT INTO messageTable VALUES (" + r.getInt("chat_id") + ",'" + clientMessage.msg + "','" + message.msg + "',CURTIME());");
                     }
