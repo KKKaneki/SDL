@@ -5,12 +5,8 @@ public class Menu {
     public static LoginUser currentUser;
     public static JFrame frame ;
 
-    Menu(){
-    }
-
-
-    public static void createMenuFrame(LoginUser user){
-        currentUser = user;
+    Menu(LoginUser user){
+        this.currentUser = user;
         frame = new JFrame();
         frame.setSize(600,600);
 
@@ -24,12 +20,9 @@ public class Menu {
         logoutBtn.addActionListener(new ActionListener(){
             @Override  
             public void actionPerformed(ActionEvent event){
-            
                 Login.logout();
-                // Menu.frame.dispose();
-                Menu.frame.setVisible(false);
-                // App.frame.setVisible(true);
-                App.loginFrameVisible();
+                Menu.frame.dispose();
+                logoutMenuFrame();  
             }
 
         });
@@ -40,13 +33,8 @@ public class Menu {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-
-    public static void menuFrameVisible(){
-       
-        frame.setVisible(true);
-        App.frame.setVisible(false);
+    public static void logoutMenuFrame(){
+        System.out.println("Log out btn clicked...");
+        new LoginFrame();
     }
-
-
-
 }
