@@ -23,27 +23,6 @@ public class Login {
     // CHECK IF ADMIN
     public static BitSet whoIsLogged = new BitSet(2);
 
-
-// 	public static void main(String[] args) {
-// 		try {
-
-// //			INITIALIZE THE SCANNER
-// 			scan = new Scanner(System.in);
-			
-// 			isLoggedIn = false;
-//             whoIsLogged = new BitSet(2);
-//             whoIsLogged.clear();
-            
-//             // GET THE LOGIN
-//             getLoginMenu();
-        
-            
-// 		} catch (Exception e) {
-// 			e.printStackTrace();
-// 		}
-
-// 	}
-    
     // GET THE LOGIN MENU
 	public static void getLoginMenu(LoginUser user) {
         try {
@@ -56,16 +35,6 @@ public class Login {
                if(notFirstTimeFailed){
                    System.out.println("INCORRECT USERNAME/PASSWORD TRY AGAIN...\n");
                }
-            //    System.out.println("WE NEED TO CONFIRM THAT YOU ARE A PART OF RESTAURENT\n");
-            //    System.out.println("LOGIN");
-               // ASK THE USER FOR HIS USERNAME
-            //    System.out.print("Enter username : ");
-            //    user.USERNAME = scan.nextLine();
-            //    // ASK THE USER FOR HIS PASSWORD
-            //    System.out.print("Enter password: ");
-            //    user.PASSWORD = scan.nextLine();
-            //    System.out.println("");
-               
                
                userObjectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                userObjectOutputStream.writeObject(user);
@@ -84,11 +53,6 @@ public class Login {
                if(response.success) {
                    isLoggedIn = true;
                    System.out.println("Logged in successfully\n");
-
-                   //Options option = new Options();
-                   // CHECK IF ADMIN
-                //    if(isLoggedIn && whoIsLogged.get(0)) option.getAdminMenu();
-                //    else option.getUserMenu(); 
                }
 
                //WHEN THE USERNAME AND THE PASSWORD EXISTS

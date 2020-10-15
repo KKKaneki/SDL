@@ -122,9 +122,9 @@ public class Options {
        
     }
 
-    public static void showAllUsers(){
+    public static RegisteredUser showAllUsers(){
         final Scanner scan = new Scanner(System.in);
-
+        RegisteredUser registeredUsers = new RegisteredUser();
         try {
             socket = new Socket("localhost",8080);
 
@@ -132,24 +132,17 @@ public class Options {
             final ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
             dataOutputStream.writeInt(code.getRegisteredUsers);
 
-            final RegisteredUser registeredUsers = (RegisteredUser) objectInputStream.readObject();
-            System.out.println(registeredUsers.users.size());
-            final Enumeration<?> user = registeredUsers.users.propertyNames();
-            System.out.println("\nUsers");
-            Integer i = 1;
-            while(user.hasMoreElements()){
-                System.out.println(i++ + ". " + user.nextElement());
-            }
-            System.out.println("\n");
+            registeredUsers = (RegisteredUser) objectInputStream.readObject();
+    
             socket.close();
         } catch(final Exception e){
             e.printStackTrace();
         }
+        return registeredUsers;
     }
 
     public static void getMenu(final Integer x){
         final Scanner scan = new Scanner(System.in);
-
         try{
             socket = new Socket("localhost",8080);
             final DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
@@ -158,17 +151,6 @@ public class Options {
             final ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
             restraurentMenu = (RestraurentMenu) objectInputStream.readObject();
 
-            if(x == 1){
-                // GET THE MENU OF THE ITEMS
-                System.out.println("#######################################################################\n");
-                System.out.println("                               MENU\n");
-                // PRINT ALL THE SUB MENU ITEMS
-                for(int i = 0 ; i < dishItems.length ; i++){
-                    printTheSingleItemTable(dishItems[i]);
-                    System.out.println("\n\n");
-                }
-                System.out.println("#######################################################################\n");
-            }
             socket.close();
         } catch(final Exception e){
             e.printStackTrace();

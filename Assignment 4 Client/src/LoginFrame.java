@@ -20,13 +20,14 @@ public class LoginFrame extends JFrame  {
 
     public LoginFrame(){
          // CREATE THE MAIN FRAME
-         frame = new JFrame();
+         frame = new JFrame("Login");
          frame.setSize(600,500);
          // INITIALIZE THE LOGIN SCREEN
   
         welcomeLabel = new JLabel();
         welcomeLabel.setText("Welcome to the ABC Restraurent App");
-        welcomeLabel.setBounds(175, 10, 600, 200);
+        welcomeLabel.setFont(welcomeLabel.getFont().deriveFont(20.0f));
+        welcomeLabel.setBounds(150, 10, 600, 180);
         frame.add(welcomeLabel);
    
  
@@ -49,6 +50,7 @@ public class LoginFrame extends JFrame  {
  
         // LOGIN BTN
         loginBtn = new JButton("Login");
+        loginBtn.setFont(loginBtn.getFont().deriveFont(14.0f));
         loginBtn.setBounds(260,260,100,30);
         
         frame.add(loginBtn);
@@ -68,12 +70,6 @@ public class LoginFrame extends JFrame  {
         frame.setLayout(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-       
-      
-        // DISPOSE THIS FRAME WHEN LOGGED IN AND MAKE ANOTHER FRAME
-     //    frame.dispose();
-        
-
     }
 
     public static void attemptLogin(){
