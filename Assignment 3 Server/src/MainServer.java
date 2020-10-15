@@ -3,18 +3,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.*;
-import java.util.Hashtable;
-import java.util.Properties;
-import java.util.Vector;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import java.sql.*;
-
-
-
 
 
 class LoginUser implements Serializable {
@@ -70,7 +64,7 @@ public class MainServer {
             // connection to the database
             System.out.println("Connecting to the database...");
             Class.forName("com.mysql.jdbc.Driver");
-            con = (Connection)  DriverManager.getConnection("jdbc:mysql://localhost:3306/sdl_restraurent?autoReconnect=true&useSSL=false&allowPublicRetrieval=true", "root", "root");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sdl_restraurent?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true", "root", "root");
             stmt = con.createStatement();
             System.out.println("Connected to database....");
 
@@ -79,7 +73,7 @@ public class MainServer {
 
             ordersHistory = new OrdersHistory();
 
-            // executorService = Executors.newFixedThreadPool(5);
+            executorService = Executors.newFixedThreadPool(5);
 
             addStaticUser();
             addMenuItems();
