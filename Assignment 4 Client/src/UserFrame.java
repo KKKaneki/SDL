@@ -15,12 +15,6 @@ public class UserFrame extends JFrame {
             userMenu = new JMenu("Users");
             getMenu = new JMenu("Menu Card");
             addMenu = new JMenu("Add Menu Item");
-            // ADD ALL THE ITEMS TO BE ADDED
-            for(String item: dishMenuItems) {
-                JMenuItem dishItem = new JMenuItem(item);
-                addMenu.add(dishItem);
-            }
-    
     
             addOrder = new JMenu("Add Order");
             orderHistory = new JMenu("Order History");
