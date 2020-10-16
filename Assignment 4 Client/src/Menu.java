@@ -25,11 +25,7 @@ public class Menu extends JFrame {
             userMenu = new JMenu("Users");
             getMenu = new JMenu("Menu Card");
             addMenu = new JMenu("Add Menu Item");
-            // ADD ALL THE ITEMS TO BE ADDED
-            for(String item: dishMenuItems) {
-                JMenuItem dishItem = new JMenuItem(item);
-                addMenu.add(dishItem);
-            }
+           
             addOrder = new JMenu("Add Order");
             orderHistory = new JMenu("Order History");
             order = new JMenu("Order Info");
@@ -68,6 +64,20 @@ public class Menu extends JFrame {
                 public void menuCanceled(final MenuEvent e) {
                 }
             });
+            addMenu.addMenuListener(new MenuListener(){
+                @Override
+                public void menuSelected(final MenuEvent e) {
+                    dispose();
+                    new AddItemFrame();
+                }
+                @Override
+                public void menuDeselected(final MenuEvent e) {
+                }
+                @Override
+                public void menuCanceled(final MenuEvent e) {
+                }
+            });
+
 
     
             logout.addActionListener(new ActionListener() {
