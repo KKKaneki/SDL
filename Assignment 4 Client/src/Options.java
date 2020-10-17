@@ -177,30 +177,15 @@ public class Options {
     }
 
     //    ADDING A NEW DISH TO THE DATABASE;
-    private static void addNewDish() {
+    public static void addNewDish(int choice,String d,Float p) {
         final Scanner scan = new Scanner(System.in);
         Boolean flag = true;
         // MENU OR ADDING DISH ITEMS 
         try {
-        while(flag){
             socket = new Socket("localhost",8080);
 
-                System.out.println("                         ADD ITEM                              \n");
-                System.out.println(" 1. SIZZLERS");
-                System.out.println(" 2. SOUPS");
-                System.out.println(" 3. ROTI");
-                System.out.println(" 4. MAIN COURSE");
-                System.out.println(" 5. RICE");
-                System.out.println(" 6. FRUIT SALAD");
-                System.out.println(" 7. DESSERTS");
-                System.out.println(" 8. BEVERAGES");
-                System.out.println(" 9. Exit");
-                System.out.print(" Enter your choice : ");
-                // INTEGER VALUE STORING THE CHOICE SELECTED BY THE USER
-                 Integer choice = Integer.parseInt(scan.nextLine());
                  DataOutputStream addItemChoice = new DataOutputStream(socket.getOutputStream());
 
-    
                 if(choice == 1) {
                     addItemChoice.writeInt(code.addSizzler);
                 } else if(choice == 2) {
@@ -220,73 +205,56 @@ public class Options {
                 }  else {
                     addItemChoice.writeInt(100);
                 }
-			     ObjectOutputStream newDish = new ObjectOutputStream(socket.getOutputStream());
+                System.out.println(choice);
+			    ObjectOutputStream newDish = new ObjectOutputStream(socket.getOutputStream());
                 switch(choice) {
                     // ADDING A SIZZLER TO THE MENU
                     case 1: final Sizzlers sizzler = new Sizzlers();
-                            sizzler.addSizzlers();
-                            System.out.println(sizzler.nameOfItem);
+                            sizzler.addSizzlers(d,p);
+                            System.out.println("Name : " + sizzler.nameOfItem + " Price: " + sizzler.price);
                             newDish.writeObject((Dishes)sizzler);
-
-                            getMenu(0);
-                            printTheSingleItemTable(dishItems[0]);
                             System.out.println("ITEM HAS BEEN ADDED.\n");
                             break;
                     // ADDING ANOTHER SOUP TO THE MENU
                     case 2: final Soup soup = new Soup();
-
-                            soup.addSoup();
+                            soup.addSoup(d,p);
                             newDish.writeObject(soup);
-                            getMenu(0);
-                            printTheSingleItemTable(dishItems[1]);
                             System.out.println("ITEM HAS BEEN ADDED.\n");
                             break;
                     // ADDING ROTI TO THE MENU
                     case 3: final Roti roti = new Roti();
-                            roti.addRoti();
+                            roti.addRoti(d,p);
                             newDish.writeObject(roti);
-                            getMenu(0);
-                            printTheSingleItemTable(dishItems[2]); 
                             System.out.println("ITEM HAS BEEN ADDED.\n");         
                             break;
                     // ADDING THE MAIN COURSE
                     case 4: final MainCourse mainCourse = new MainCourse();
-                            mainCourse.addMainCourse();
+                            mainCourse.addMainCourse(d,p);
                             newDish.writeObject(mainCourse);
-                            getMenu(0);
-                            printTheSingleItemTable(dishItems[3]);
                             System.out.println("ITEM HAS BEEN ADDED.\n");
                             break;
                     // ADDING THE RICE TO THE MENU 
                     case 5: final Rice rice = new Rice();
-                            rice.addRice();
+                            rice.addRice(d,p);
                             newDish.writeObject(rice);
-                            getMenu(0);
-                            printTheSingleItemTable(dishItems[4]);
                             System.out.println("ITEM HAS BEEN ADDED.\n");
                             break;
                     //  ADDING THE FRUIT SALAD TO THE MENU
                     case 6: final FruitSalad fruitSalad = new FruitSalad();
-                            fruitSalad.addFruitSalad();
+                            fruitSalad.addFruitSalad(d,p);
                             newDish.writeObject(fruitSalad);
-                            getMenu(0);
-                            printTheSingleItemTable(dishItems[5]);
                             System.out.println("ITEM HAS BEEN ADDED.\n");
                             break;
                     //  ADDING THE DESSERT TO THE MENU
                     case 7: final Dessert dessert = new Dessert();
-                            dessert.addDessert();
+                            dessert.addDessert(d,p);
                             newDish.writeObject(dessert);
-                            getMenu(0);
-                            printTheSingleItemTable(dishItems[6]);
                             System.out.println("ITEM HAS BEEN ADDED.\n");
                             break;
                     //  ADDING BEVERAGES TO THE MENU
                     case 8: final Beverage beverage = new Beverage();
-                            beverage.addBeverage();
+                            beverage.addBeverage(d,p);
                             newDish.writeObject(beverage);
-                            getMenu(0);
-                            printTheSingleItemTable(dishItems[7]);
                             System.out.println("ITEM HAS BEEN ADDED.\n");
                             break;
                     // EXITING THE ADD DISH MENU
@@ -298,7 +266,6 @@ public class Options {
                             break;
                 }
                 socket.close();
-            } 
         }
         catch (final Exception e){
             e.printStackTrace();
@@ -415,38 +382,24 @@ public class Options {
     }
 
     // PLACE THE CURRENT ORDER
-    public static void placeTheOrder(){
+    public static void placeTheOrder(String name,String phone){
         final Scanner scan = new Scanner(System.in);
 
         if(currentOrder.dishItems.size() == 0){
             System.out.println("Please enter at least one order item...");
         } else {
             try {
-                System.out.print("ENTER YOUR NAME :");
-                final String name = scan.nextLine();
-                System.out.print("ENTER YOUR PHONE NUMBER : ");
-                final String phone = scan.nextLine();
                 currentOrder.phone = phone;
                 currentOrder.name = name;
-                System.out.println("ARE YOU SURE YOU WANT TO PLACE THE ORDER? (Y/N) ");
-                final String ch = scan.nextLine();
-                if(ch.equals("Y")){
                     socket = new Socket("localhost",8080);
                     // SEND THIS TO SERVER
                     final DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
                     dataOutputStream.writeInt(code.placeOrder);
                     final ObjectOutputStream placeTheOrdeStream = new ObjectOutputStream(socket.getOutputStream());
                     placeTheOrdeStream.writeObject(currentOrder);
-                    
-                    // orders.add(currentOrder);
-                    System.out.println("TOTAL AMOUNT OF YOUR ORDER IS " + currentOrder.orderPrice  + "\n");
-                    System.out.println("YOUR ORDER ID IS " + currentOrder.orderID + "\n");
+
                     System.out.println("ORDER HAS BEEN PLACED.\n");
                     currentOrder = new Order();
-                   
-                } else {
-                    System.out.println("MAKE THE CHANGES YOU WANT...\n");
-                }
             } catch(final Exception e){
                 e.printStackTrace();
             }

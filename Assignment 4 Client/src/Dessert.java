@@ -2,13 +2,10 @@ import java.io.Serializable;
 import java.util.*;
 public class Dessert extends Dishes implements Serializable {
 
-	
-	public void addDessert() {
+	public void addDessert(String d,Float p) {
 		Scanner scan = new Scanner(System.in);
-		System.out.print("ENTER NAME OF THE DESSERT: ");
-		nameOfItem = scan.nextLine();
-		System.out.print("\nENTER THE PRICE: ");
-		price = scan.nextFloat();
+		nameOfItem = d;
+        price = p;
 	}
 
 	public String toString(){

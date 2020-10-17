@@ -1,15 +1,10 @@
 import java.io.Serializable;
 import java.util.*;
 public class MainCourse extends Dishes implements Serializable {
-
-	
-	public void addMainCourse() {
+	public void addMainCourse(String d,Float p) {
 		Scanner scan = new Scanner(System.in);
-
-		System.out.print("ENTER NAME OF THE MAIN COURSE: ");
-		nameOfItem = scan.nextLine();
-		System.out.print("\nENTER THE PRICE: ");
-		price = scan.nextFloat();
+		nameOfItem = d;
+        price = p;
 	}
 
 	public String toString(){

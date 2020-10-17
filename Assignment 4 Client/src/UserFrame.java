@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.*;
+import javax.swing.event.*;
 
 public class UserFrame extends JFrame {
     public static String[] dishMenuItems = {"SIZZLER", "SOUP","ROTI","MAIN COURSE","RICE","FRUITSALAD", "DESSERT","BEVERAGE"};
@@ -15,29 +16,60 @@ public class UserFrame extends JFrame {
             userMenu = new JMenu("Users");
             getMenu = new JMenu("Menu Card");
             addMenu = new JMenu("Add Menu Item");
-    
+           
             addOrder = new JMenu("Add Order");
             orderHistory = new JMenu("Order History");
             order = new JMenu("Order Info");
             chat = new JMenu("Chat Server");
             profile = new JMenu(Menu.currentUser.USERNAME);
             JMenuItem logout = new JMenuItem("Logout");
-            profile.add(logout);
     
-            
-            menuBar.add(userMenu);
-            menuBar.add(getMenu);
-            menuBar.add(addMenu);
-            menuBar.add(orderHistory); 
-            menuBar.add(order);
-            menuBar.add(chat);
-            menuBar.add(profile);
-        
+
     
             // menuBar.setLayout(new GridBagLayout());
             
-    
-            setJMenuBar(menuBar);
+
+            userMenu.addMenuListener(new MenuListener(){
+                @Override
+                public void menuSelected(final MenuEvent e) {
+                    dispose();
+                    new UserFrame();
+                }
+                @Override
+                public void menuDeselected(final MenuEvent e) {
+                }
+                @Override
+                public void menuCanceled(final MenuEvent e) {
+                }
+            });
+            getMenu.addMenuListener(new MenuListener() {
+                @Override
+                public void menuSelected(final MenuEvent e) {
+                    dispose();
+                    new MenuFrame();
+                }
+                @Override
+                public void menuDeselected(final MenuEvent e) {
+                }
+                @Override
+                public void menuCanceled(final MenuEvent e) {
+                }
+            });
+            addMenu.addMenuListener(new MenuListener(){
+                @Override
+                public void menuSelected(final MenuEvent e) {
+                    dispose();
+                    new AddItemFrame();
+                }
+                @Override
+                public void menuDeselected(final MenuEvent e) {
+                }
+                @Override
+                public void menuCanceled(final MenuEvent e) {
+                }
+            });
+
+
     
             logout.addActionListener(new ActionListener() {
                 @Override
@@ -45,8 +77,22 @@ public class UserFrame extends JFrame {
                     Login.logout();
                     dispose();
                     logoutMenuFrame();
-                }    
+                }
+    
             });
+                        
+            menuBar.add(userMenu);
+            menuBar.add(getMenu);
+            menuBar.add(addMenu);
+            menuBar.add(addOrder);
+            menuBar.add(orderHistory); 
+            menuBar.add(order);
+            menuBar.add(chat);
+        
+            profile.add(logout);
+            menuBar.add(profile);
+
+
 
             setJMenuBar(menuBar);
 

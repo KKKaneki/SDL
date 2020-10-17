@@ -2,14 +2,12 @@ import java.io.Serializable;
 import java.util.*;
 public class FruitSalad extends Dishes implements Serializable {
 
-	
-	public void addFruitSalad() {
+	public void addFruitSalad(String d,Float p) {
 		Scanner scan = new Scanner(System.in);
-		System.out.print("ENTER NAME OF THE FRUIT SALAD: ");
-		nameOfItem = scan.nextLine();
-		System.out.print("\nENTER THE PRICE: ");
-		price = scan.nextFloat();
+		nameOfItem = d;
+        price = p;
 	}
+
 
 	public String toString(){
 		return this.nameOfItem + " costs " + this.price + "\n";

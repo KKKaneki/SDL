@@ -2,14 +2,10 @@ import java.io.Serializable;
 import java.util.*;
 public class Rice extends Dishes implements Serializable{
 
-	
-	public void addRice() {
+	public void addRice(String d,Float p) {
 		Scanner scan = new Scanner(System.in);
-
-		System.out.print("ENTER NAME OF THE Rice: ");
-		nameOfItem = scan.nextLine();
-		System.out.print("\nENTER THE PRICE: ");
-		price = scan.nextFloat();
+		nameOfItem = d;
+        price = p;
 	}
 
 	public String toString(){

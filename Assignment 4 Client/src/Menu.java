@@ -77,6 +77,34 @@ public class Menu extends JFrame {
                 public void menuCanceled(final MenuEvent e) {
                 }
             });
+            
+            addOrder.addMenuListener(new MenuListener() {
+                @Override
+                public void menuSelected(final MenuEvent e) {
+                    dispose();
+                    new AddOrderFrame();
+                }
+                @Override
+                public void menuDeselected(final MenuEvent e) {
+                }
+                @Override
+                public void menuCanceled(final MenuEvent e) {
+                }
+            });
+
+            orderHistory.addMenuListener(new MenuListener(){
+                @Override
+                public void menuSelected(final MenuEvent e) {
+                    dispose();
+                    new OrderHistoryFrame();
+                }
+                @Override
+                public void menuDeselected(final MenuEvent e) {
+                }
+                @Override
+                public void menuCanceled(final MenuEvent e) {
+                }
+            });
 
 
     
@@ -93,6 +121,7 @@ public class Menu extends JFrame {
             menuBar.add(userMenu);
             menuBar.add(getMenu);
             menuBar.add(addMenu);
+            menuBar.add(addOrder);
             menuBar.add(orderHistory); 
             menuBar.add(order);
             menuBar.add(chat);

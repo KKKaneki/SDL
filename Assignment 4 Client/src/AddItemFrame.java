@@ -29,7 +29,6 @@ public class AddItemFrame extends JFrame {
 
 
         // menuBar.setLayout(new GridBagLayout());
-        
 
         userMenu.addMenuListener(new MenuListener(){
             @Override
@@ -86,6 +85,7 @@ public class AddItemFrame extends JFrame {
         menuBar.add(userMenu);
         menuBar.add(getMenu);
         menuBar.add(addMenu);
+        menuBar.add(addOrder);
         menuBar.add(orderHistory); 
         menuBar.add(order);
         menuBar.add(chat);
@@ -144,15 +144,57 @@ public class AddItemFrame extends JFrame {
         // EVENT LISTENER
         addButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                String cat = (String)cb.getSelectedItem();
-                String name = (String) nameField.getText();
-                Float price = Float.parseFloat(priceField.getText());
-                if(name == "") {
-                    nameError.setText("Name should not be empty");
-                    nameError.setForeground(COLOR.RED);
-                    wait(3000);
-                    nameError.setText("");
+                try {
+                    String cat = (String)cb.getSelectedItem();
+                    String name = (String) nameField.getText();
+                    Float price = Float.parseFloat(priceField.getText());
+                    System.out.println("Cat : " + cat);
+                    System.out.println("Name : " + name);
+                    System.out.println("Price : " + price);
+
+                        int flag = 1;
+                        if(name.equals("")) {
+                            nameError.setText("Name should not be empty");
+                            nameError.setForeground(new Color(255,0,0));
+                            wait(3000);
+                            flag = 0;
+                            nameError.setText("");
+                        }
+                        if(String.valueOf(price).equals("")) {
+                            priceError.setText("Price should not be empty");
+                            priceError.setForeground(new Color(255,0,0));
+                            wait(3000);
+                            flag = 0;
+                            priceError.setText("");
+                        }
+                        if(flag == 1) {
+                            if(cat.equals(dishMenuItems[0])){
+                                Options.addNewDish(1,name,price);
+                            } else if(cat.equals(dishMenuItems[1])){
+                                Options.addNewDish(2,name,price);
+                            } else if(cat.equals(dishMenuItems[2])){
+                                Options.addNewDish(3,name,price);
+                            } else if(cat.equals(dishMenuItems[3])){
+                                Options.addNewDish(4,name,price);
+                            } else if(cat.equals(dishMenuItems[4])){
+                                Options.addNewDish(5,name,price);
+                            } else if(cat.equals(dishMenuItems[5])){
+                                Options.addNewDish(6,name,price);
+                            } else if(cat.equals(dishMenuItems[6])){
+                                Options.addNewDish(7,name,price);
+                            } if(cat.equals(dishMenuItems[7])){
+                                Options.addNewDish(8,name,price);
+                            } 
+
+                            JOptionPane.showMessageDialog(null, "Item Added Successfully","Success",JOptionPane.INFORMATION_MESSAGE);
+                            dispose();
+                            new MenuFrame();
+                        }
+                
+                } catch(Exception ex) {
+                        JOptionPane.showMessageDialog(null,"Name should not be empty and Price should be a number\n", "Error",JOptionPane.ERROR_MESSAGE);
                 }
+                
             }
         });
 

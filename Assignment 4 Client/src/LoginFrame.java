@@ -1,6 +1,11 @@
-import javax.swing.*;
-import java.awt.event.*;
+
 import java.io.Serializable;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.event.*;
+import javax.swing.table.DefaultTableModel;
+import java.util.*;
 
 class LoginUser implements Serializable {
     String USERNAME;
@@ -52,6 +57,8 @@ public class LoginFrame extends JFrame  {
         loginBtn = new JButton("Login");
         loginBtn.setFont(loginBtn.getFont().deriveFont(14.0f));
         loginBtn.setBounds(260,260,100,30);
+        loginBtn.setBackground(Color.BLACK);
+        loginBtn.setForeground(Color.WHITE);
         
         frame.add(loginBtn);
  
