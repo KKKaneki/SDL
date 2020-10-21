@@ -58,8 +58,8 @@ public class Options {
                             break;
                     case 2: getMenu(1);
                             break;
-                    case 3: addNewDish();
-                            break;
+                    // case 3: addNewDish();
+                    //         break;
                     case 4: makeCurrentOrder();
                             break;
                     case 5: orderHistory(1);
@@ -418,9 +418,6 @@ public class Options {
             final ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
             
             orders = (OrdersHistory) objectInputStream.readObject();
-            if(x == 1){
-                printOrderHistory();
-            }
 
         } catch(final Exception e){
             e.printStackTrace();
@@ -445,7 +442,29 @@ public class Options {
     }
 
      // GET THE PARTICULAR ORDER 
-     private static void getOrder(){
+     public static int getOrder(String id){
+        int flag = 0;
+         try {
+            final Scanner scan = new Scanner(System.in);
+            orderHistory(0);
+
+
+            System.out.println(orders.orders.size());
+
+            for(int i=0;i<orders.orders.size();i++){
+                if((orders.orders.elementAt(i).orderID == Integer.parseInt(id))){
+                    currentOrder = orders.orders.elementAt(i);
+                    System.out.println(currentOrder.name);
+                    flag = 1;
+                    break;
+                }
+            }
+         } catch(final Exception e){
+            e.printStackTrace();
+         }
+         return flag;
+    }
+    public static void editOrder(String id){
          try {
             final Scanner scan = new Scanner(System.in);
             orderHistory(0);
@@ -454,51 +473,12 @@ public class Options {
             final DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             dataOutputStream.writeInt(code.editOrder);
 
-            System.out.println("ENTER THE ORDER ID :");
-            int flag = 0;
+            final ObjectOutputStream ous = new ObjectOutputStream(socket.getOutputStream());
+            currentOrder.orderID = Integer.parseInt(id);
+            ous.writeObject(currentOrder);
+            currentOrder = new Order();
 
-
-            ID = Integer.parseInt(scan.nextLine().toString());
-            for(int i=0;i<orders.orders.size();i++){
-                if(orders.orders.elementAt(i).orderID.equals(ID)){
-                    currentOrder = orders.orders.elementAt(i);
-                    seeCurrentOrder();
-                    flag = 1;
-                    break;
-                }
-            }
-            System.out.println(currentOrder.orderID);
-            if(flag == 1){
-                flag = 1;
-                int choice;
-                do{
-                    System.out.println("         EDIT ORDER\n");
-                    System.out.println(" 1. ADD ITEM");
-                    System.out.println(" 2. REMOVE ITEM");
-                    System.out.println(" 3. SEE THE ORDER");
-                    System.out.println(" 4. SAVE ORDER");
-                    System.out.println(" 5. Exit");
-                    System.out.print("Enter your choice : ");
-                    choice = Integer.parseInt(scan.nextLine().toString());
-                    // SWTICH THE CHOICES
-                    switch(choice){
-                        case 1: addOrderItem();
-                                break;
-                        case 2: removeOrderItem();
-                                break;
-                        case 3: seeCurrentOrder();
-                                break;
-                        case 4: saveTheOrder();
-                                break;
-                        case 5: flag = 0;
-                                break;
-                        default: System.out.println("ENTER A VALID OPTION\n");
-                                break;
-                    }
-                }while(flag == 1);
-            } else {
-                System.out.println("NO ORDER WITH THIS ID IS FOUND.\n");
-            }
+            System.out.println("Order has been updated");            
          } catch(final Exception e){
             e.printStackTrace();
          }
@@ -510,7 +490,6 @@ public class Options {
 
             final ObjectOutputStream ous = new ObjectOutputStream(socket.getOutputStream());
             currentOrder.orderID = ID;
-            System.out.println(currentOrder.orderID);
             ous.writeObject(currentOrder);
             currentOrder = new Order();
 

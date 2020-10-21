@@ -609,7 +609,7 @@ public class MainServer {
     public static void insertOrderIntoDatabase(Order currentOrder){
         try {
             // CREATE ORDER QUERY
-            String orderQuery = "INSERT INTO orders VALUES (NULL," + currentOrder.orderPrice + ",'" + currentOrder.name + "'," + currentOrder.phone + ");";
+            String orderQuery = "INSERT INTO orders VALUES (" + currentOrder.orderID + "," + currentOrder.orderPrice + ",'" + currentOrder.name + "'," + currentOrder.phone + ");";
             stmt.executeUpdate(orderQuery);
 
             String getOrderId = "SELECT order_id,MAX(order_id) FROM orders WHERE order_price=" + currentOrder.orderPrice + " AND name='" + currentOrder.name + "' AND phone=" + currentOrder.phone + ";";

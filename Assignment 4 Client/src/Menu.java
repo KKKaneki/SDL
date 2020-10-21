@@ -105,7 +105,33 @@ public class Menu extends JFrame {
                 public void menuCanceled(final MenuEvent e) {
                 }
             });
+            order.addMenuListener(new MenuListener(){
+                @Override
+                public void menuSelected(final MenuEvent e) {
+                    dispose();
+                    new OrderInfoFrame();
+                }
+                @Override
+                public void menuDeselected(final MenuEvent e) {
+                }
+                @Override
+                public void menuCanceled(final MenuEvent e) {
+                }
+            });
 
+            chat.addMenuListener(new MenuListener(){
+                @Override
+                public void menuSelected(final MenuEvent e) {
+                    dispose();
+                    new ChatFrame();
+                }
+                @Override
+                public void menuDeselected(final MenuEvent e) {
+                }
+                @Override
+                public void menuCanceled(final MenuEvent e) {
+                }
+            });
 
     
             logout.addActionListener(new ActionListener() {

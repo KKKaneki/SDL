@@ -49,7 +49,7 @@ public class Chat {
                     System.out.println(clientMessage.name + " has closed connection ...");
                     break;
                 } 
-                System.out.print("[Server] Your Message to" + clientMessage.name + ": ");
+                System.out.print("[Server] Your Message to " + clientMessage.name + ": ");
                 message.msg = scan.nextLine();
                // message.msg = sendMessageToAll();
 

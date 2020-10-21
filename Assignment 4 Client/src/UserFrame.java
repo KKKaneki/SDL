@@ -68,7 +68,60 @@ public class UserFrame extends JFrame {
                 public void menuCanceled(final MenuEvent e) {
                 }
             });
+            
+            addOrder.addMenuListener(new MenuListener() {
+                @Override
+                public void menuSelected(final MenuEvent e) {
+                    dispose();
+                    new AddOrderFrame();
+                }
+                @Override
+                public void menuDeselected(final MenuEvent e) {
+                }
+                @Override
+                public void menuCanceled(final MenuEvent e) {
+                }
+            });
 
+            orderHistory.addMenuListener(new MenuListener(){
+                @Override
+                public void menuSelected(final MenuEvent e) {
+                    dispose();
+                    new OrderHistoryFrame();
+                }
+                @Override
+                public void menuDeselected(final MenuEvent e) {
+                }
+                @Override
+                public void menuCanceled(final MenuEvent e) {
+                }
+            });
+            order.addMenuListener(new MenuListener(){
+                @Override
+                public void menuSelected(final MenuEvent e) {
+                    dispose();
+                    new OrderInfoFrame();
+                }
+                @Override
+                public void menuDeselected(final MenuEvent e) {
+                }
+                @Override
+                public void menuCanceled(final MenuEvent e) {
+                }
+            });
+            chat.addMenuListener(new MenuListener(){
+                @Override
+                public void menuSelected(final MenuEvent e) {
+                    dispose();
+                    new ChatFrame();
+                }
+                @Override
+                public void menuDeselected(final MenuEvent e) {
+                }
+                @Override
+                public void menuCanceled(final MenuEvent e) {
+                }
+            });
 
     
             logout.addActionListener(new ActionListener() {
@@ -95,7 +148,6 @@ public class UserFrame extends JFrame {
 
 
             setJMenuBar(menuBar);
-
             registeredUser = Options.showAllUsers();
 
             // DISPLAY THE USERS ON THE FRAME
