@@ -6,6 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.*;
 import java.io.*;
 import java.net.*;
+import java.security.cert.Extension;
 
 
 public class ChatFrame extends JFrame {
@@ -173,12 +174,18 @@ public class ChatFrame extends JFrame {
 
 
         JButton send = new JButton("Send");
-        send.setBounds(360, 500, 100, 30);
+        send.setBounds(360, 500, 80, 30);
         send.setVisible(false);
+        
+        JButton exit = new JButton("Exit");
+        exit.setBounds(450, 500, 80, 30);
+        exit.setVisible(false);
+        add(exit);
         add(send);
         DefaultTableModel jd = new DefaultTableModel();
         jd.addColumn("Server Chat");
         JTable chatTable = new JTable();
+        chatTable.setFont(chatTable.getFont().deriveFont(14.0f));
        
         chatTable.setEnabled(false);
         chatTable.setModel(jd);
@@ -191,7 +198,7 @@ public class ChatFrame extends JFrame {
                 try {
                     mes.setVisible(true);
                     send.setVisible(true);
-
+                    exit.setVisible(true);
 
                     Code code = new Code();
                     Scanner scan = new Scanner(System.in);
@@ -208,18 +215,39 @@ public class ChatFrame extends JFrame {
                         send.addActionListener(new ActionListener(){
                             public void actionPerformed(ActionEvent e) {
                                     try {               
+
                                         Message message = new Message();
                                         message.name = nm;                         
                                         message.msg = mes.getText();
                                         jd.addRow(new Object[]{String.valueOf("[" + name.getText() + "] :" + mes.getText())});
-                                       
-                                       if(message.msg.equals("EXIT")) socket.close();
+
                                         dataOutputStream.writeObject(message);
+
+
                                         System.out.println("Waiting for server response.."); 
                                         Message serverMessage = (Message) dataInputStream.readObject();
-                                        send.setEnabled(true);
                                         jd.addRow(new Object[]{"[Server] :" + serverMessage.msg}); 
 
+                                    } catch(Exception ex) {
+                                        ex.printStackTrace();
+                                    }                       
+                            }
+                        });
+
+
+                        exit.addActionListener(new ActionListener(){
+                            public void actionPerformed(ActionEvent e) {
+                                    try {               
+              
+                                        Message message = new Message();
+                                        message.name = nm;                         
+                                        message.msg = "EXIT";
+
+                                        dataOutputStream.writeObject(message);
+
+                                        socket.close();
+                                        dispose();
+                                        new Menu(Menu.currentUser);
                                     } catch(Exception ex) {
                                         ex.printStackTrace();
                                     }                       
@@ -234,6 +262,8 @@ public class ChatFrame extends JFrame {
             }
         });
 
+
+        
         add(jsp);
 
 

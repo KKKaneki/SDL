@@ -175,7 +175,7 @@ public class EditOrderFrame extends JFrame {
             data[i][0] = Options.currentOrder.dishItems.get(i).dishID;
             data[i][1] = Options.currentOrder.dishItems.get(i).nameOfItem;
             data[i][2] = String.valueOf(Options.currentOrder.qty.get(i));
-            data[i][3] = String.valueOf(Options.currentOrder.dishItems.get(i).price);
+            data[i][3] = String.valueOf(Options.currentOrder.dishItems.get(i).price*Options.currentOrder.qty.get(i));
             model.addRow(new Object[]{data[i][0],data[i][1],data[i][2],data[i][3]});
         }
        

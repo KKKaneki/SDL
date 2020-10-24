@@ -30,97 +30,6 @@ public class Options {
     public static Integer ID;
 
 
-    public void getAdminMenu(){
-
-        try {
-            
-            getMenu(0);
-            orderHistory(0);
-            System.out.println(restraurentMenu.Dishes.get("ROTI").size());
-
-            while(true){
-                final Scanner scan = new Scanner(System.in);
-
-                System.out.println("MENU");
-                System.out.println(" 1. VIEW USERS");
-                System.out.println(" 2. VIEW MENU");
-                System.out.println(" 3. ADD NEW DISH");
-                System.out.println(" 4. ADD ORDER");
-                System.out.println(" 5. ORDERS HISTORY");
-                System.out.println(" 6. VIEW ORDER");
-                System.out.println(" 7. Logout");
-                System.out.println(" 8. Chat With Server\n");
-                System.out.print(" Enter your choice : ");
-                final Integer choice = Integer.parseInt(scan.nextLine());
-               //PERFORM A PARTICULAR ACTION
-                switch(choice) {
-                    case 1: showAllUsers();
-                            break;
-                    case 2: getMenu(1);
-                            break;
-                    // case 3: addNewDish();
-                    //         break;
-                    case 4: makeCurrentOrder();
-                            break;
-                    case 5: orderHistory(1);
-                            break;
-                    case 6: getOrder();
-                            break;
-                    case 7: Login.logout();
-                            break;
-                    case 8: Chat.chatWithServer();
-                            break;
-                    default: System.out.println("ENTER A VALID INPUT\n");
-                            break;
-                }
-            }
-        
-        } catch(final Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public void getUserMenu(){
-        try {
-            final Scanner scan = new Scanner(System.in);    
-            getMenu(0);
-            orderHistory(0);
-            
-            while(true){
-                System.out.println("MENU                             ");
-                System.out.println(" 1. MENU");
-                System.out.println(" 2. ADD ORDER");
-                System.out.println(" 3. ORDERS HISTORY");
-                System.out.println(" 4. VIEW ORDER");
-                System.out.println(" 5. Logout");
-                System.out.println(" 6. Chat With Server\n");
-                System.out.println(" Enter your choice : ");
-                final Integer choice = Integer.parseInt(scan.nextLine().toString());
-                
-            //        PERFORM A PARTICULAR ACTION
-                switch(choice) {
-                    case 1: getMenu(1);
-                            break;
-                    case 2: makeCurrentOrder();
-                            break;
-                    case 3: orderHistory(1);
-                            break;
-                    case 4: getOrder();
-                            break;
-                    case 5: Login.logout();
-                            break;
-                    case 6: Chat.chatWithServer();
-                            break;
-                    default: System.out.println("ENTER A VALID INPUT\n");
-                            break;
-                }
-            }
-    
-        } catch(final Exception e){
-            e.printStackTrace();
-        }
-       
-    }
 
     public static RegisteredUser showAllUsers(){
         final Scanner scan = new Scanner(System.in);
@@ -157,24 +66,6 @@ public class Options {
         }      
     }
 
-    // PRINTING THE TABLE FOR SPECIFIC ITEMS FROM THE MENU ITEM
-    private static void printTheSingleItemTable(final String itemName){
-    
-        final Enumeration<?> allItems = restraurentMenu.Dishes.get(itemName).elements();
-        System.out.println("******************************************************************\n");
-        System.out.println("                          " + itemName  + "                       \n");
-        System.out.println("******************************************************************\n");
-        System.out.println("ID \tNAME \t\t\t\t\t\tPRICE\n");
-            if(restraurentMenu.Dishes.get(itemName).size() == 0){
-            System.out.println("No items were found in " + itemName + ".\n");
-            }
-            final int i = 1;
-            while(allItems.hasMoreElements()){
-                final Dishes dishes = (Dishes) allItems.nextElement();
-            System.out.println(String.format("%s %-45s- %s",dishes.dishID,dishes.nameOfItem, "Rs. " + dishes.price + "\n"));
-            }
-        System.out.println("******************************************************************\n");
-    }
 
     //    ADDING A NEW DISH TO THE DATABASE;
     public static void addNewDish(int choice,String d,Float p) {
@@ -274,38 +165,6 @@ public class Options {
     	
     }
 
-    // MAKE A CURRENT ORDER
-    private static void makeCurrentOrder(){
-        final Scanner scan = new Scanner(System.in);
-        Boolean flag = true;
-        int choice;
-        currentOrder = new Order();
-        do {
-            System.out.println(" MAKE ORDER");
-            System.out.println(" 1. Add Item");
-            System.out.println(" 2. Remove Item");
-            System.out.println(" 3. See the Order");
-            System.out.println(" 4. Place Order");
-            System.out.println(" 5. Exit");
-            System.out.print("Enter your choice : ");
-            choice = Integer.parseInt(scan.nextLine().toString());
-            // SWTICH THE CHOICES
-            switch(choice){
-                case 1: addOrderItem();
-                        break;
-                case 2: removeOrderItem();
-                        break;
-                case 3: seeCurrentOrder();
-                        break;
-                case 4: placeTheOrder();
-                        break;
-                case 5: flag = false;
-                        break;
-                default: System.out.println("ENTER A VALID OPTION\n");
-                        break;
-            }
-        }while(flag);
-    }
 
     // SEE THE CURRENT ORDER
     public static void seeCurrentOrder(){
@@ -425,21 +284,6 @@ public class Options {
 
     }
 
-      // SEE ALL THE ORDERS IN THE RECENT TO OLD ORDER
-    private static void printOrderHistory(){
-        System.out.println("#######################################################################\n");
-        System.out.println("                           ORDER HISTORY\n");
-        for(int i=orders.orders.size()-1;i>=0;i--){
-            System.out.println("ORDER ID: " + orders.orders.get(i).orderID + " (" + orders.orders.get(i).name + ")");
-            final ArrayList<Dishes> items = orders.orders.get(i).dishItems;
-            final ArrayList<Integer> qty = orders.orders.get(i).qty;
-            for(int j=0;j<items.size();j++){
-                System.out.println(String.format("%-45s %d - Rs %f\n", items.get(j).nameOfItem,qty.get(j),items.get(j).price));
-            }
-            System.out.println(String.format("%-47s = Rs %f\n\n", "Total Amount",orders.orders.get(i).orderPrice));
-        }
-        System.out.println("#######################################################################\n");
-    }
 
      // GET THE PARTICULAR ORDER 
      public static int getOrder(String id){

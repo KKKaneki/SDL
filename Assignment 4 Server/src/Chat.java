@@ -45,21 +45,18 @@ public class Chat {
                 
                 Message clientMessage = (Message) objectInputStream.readObject();
                 System.out.println("[" + clientMessage.name  + "] Message : " + clientMessage.msg);
-                if(clientMessage.msg.toUpperCase().equals("EXIT")) {
-                    System.out.println(clientMessage.name + " has closed connection ...");
+                
+                if(clientMessage.msg.equals("EXIT")) {
+                    so.close();
                     break;
-                } 
+                }
                 System.out.print("[Server] Your Message to " + clientMessage.name + ": ");
                 message.msg = scan.nextLine();
                // message.msg = sendMessageToAll();
 
                 objectOutputStream.writeObject(message);
-
-                if(message.msg.toUpperCase().equals("EXIT")) {
-                    System.out.println("You have closed connection ...");
-                    break;
-                } 
                 
+
                 
                 ResultSet rs = stmt.executeQuery("SELECT * FROM chatTable WHERE client='" + clientMessage.name + "';");
 
