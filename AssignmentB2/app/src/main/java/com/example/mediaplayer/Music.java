@@ -17,10 +17,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Music extends AppCompatActivity {
-    TextView songName;
+    TextView songName,current_duration,duration;
     SeekBar sb;
     ImageButton next,play,pause,prev;
     public static MediaPlayer mediaPlayer;
@@ -28,6 +29,15 @@ public class Music extends AppCompatActivity {
     public static int position ;
     Thread updateSeekBar;
     Boolean playAgain;
+
+    public String convertToTime(int dur,int flag) {
+        int minutes = (int) Math.ceil(dur / 1000);
+        String time = minutes/60 + ":";
+        if( minutes % 60 < 10) time += ("0");
+        if( minutes % 60 == 0 && flag == 0) time += "1";
+        else time +=  minutes % 60;
+        return time;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +55,10 @@ public class Music extends AppCompatActivity {
         next = (ImageButton) findViewById(R.id.next);
         pause = (ImageButton) findViewById(R.id.pause);
         prev = (ImageButton)findViewById(R.id.prev);
+
+        current_duration = (TextView) findViewById(R.id.current_duration);
+        current_duration.setText(convertToTime(0,0));
+        duration = (TextView) findViewById(R.id.duration);
 
 
 
@@ -71,7 +85,37 @@ public class Music extends AppCompatActivity {
         mediaPlayer.start();
         sb.setProgress(0);
         sb.setMax(mediaPlayer.getDuration());
-        changeSeekBar();
+
+        duration.setText(convertToTime(mediaPlayer.getDuration(),0));
+
+        updateSeekBar = new Thread() {
+            @Override
+            public void run() {
+                int totalDuration = mediaPlayer.getDuration();
+                int currentPosition = 0;
+
+                while(true) {
+                    try {
+                        sleep(100);
+                        currentPosition = mediaPlayer.getCurrentPosition();
+
+                        current_duration.setText(convertToTime(currentPosition, 0));
+
+                        sb.setProgress(Math.min(currentPosition, mediaPlayer.getDuration()));
+
+                        if(!mediaPlayer.isPlaying()) {
+                            sb.setProgress(0);
+                            current_duration.setText(convertToTime(0, 1));
+                            pause.setImageResource(R.drawable.icon_play);
+                        }
+                        Log.i("MSG", "" + mediaPlayer.isPlaying());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        updateSeekBar.start();
 
         sb.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
         sb.getThumb().setColorFilter(getResources().getColor(R.color.colorPrimary),PorterDuff.Mode.SRC_IN);
@@ -118,6 +162,8 @@ public class Music extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+//                if(updateSeekBar.isAlive()) updateSeekBar.interrupt();
+
                 mediaPlayer.stop();
                 mediaPlayer.release();
 
@@ -128,10 +174,15 @@ public class Music extends AppCompatActivity {
                 Uri u = Uri.parse(mySongs.get(position).toString());
                 mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
 
-
                 songName.setText(songname);
                 mediaPlayer.start();
-               pause.setImageResource(R.drawable.icon_pause);
+
+                sb.setMax(mediaPlayer.getDuration());
+
+                duration.setText(convertToTime(mediaPlayer.getDuration(),0));
+
+
+                pause.setImageResource(R.drawable.icon_pause);
 
 
             }
@@ -140,8 +191,7 @@ public class Music extends AppCompatActivity {
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+//                if(updateSeekBar.isAlive()) updateSeekBar.interrupt();
                 mediaPlayer.stop();
                 mediaPlayer.release();
 
@@ -149,12 +199,16 @@ public class Music extends AppCompatActivity {
                 String songname = mySongs.get(position).getName().toString();
 
                 Uri u = Uri.parse(mySongs.get(position).toString());
-                mediaPlayer = MediaPlayer.create(getApplicationContext(), u);
 
                 pause.setImageResource(R.drawable.icon_pause);
                 songName.setText(songname);
+                mediaPlayer = MediaPlayer.create(getApplicationContext(),u);
+
                 mediaPlayer.start();
 
+                sb.setMax(mediaPlayer.getDuration());
+
+                duration.setText(convertToTime(mediaPlayer.getDuration(),0));
             }
         });
 
@@ -170,7 +224,13 @@ public class Music extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
     public void changeSeekBar(){
+        sb.setMax(mediaPlayer.getDuration());
+
+        duration.setText(convertToTime(mediaPlayer.getDuration(),0));
+
         updateSeekBar = new Thread() {
             @Override
             public void run() {
@@ -178,19 +238,31 @@ public class Music extends AppCompatActivity {
                 int totalDuration = mediaPlayer.getDuration();
                 int currentPosition = 0;
 
-                while(currentPosition < totalDuration) {
+                while(currentPosition <= totalDuration) {
                     try {
-                        sleep(500);
+                        sleep(100);
                         currentPosition = mediaPlayer.getCurrentPosition();
-                        sb.setProgress(currentPosition);
-                    } catch (Exception e) {
+
+                        Log.i("MSG","" + currentPosition);
+                        current_duration.setText(convertToTime(currentPosition,0));
+
+                        sb.setProgress(Math.min(currentPosition,mediaPlayer.getDuration()));
+
+                        if(!mediaPlayer.isPlaying()) {
+                            break;
+                        }
+                        Log.i("MSG","" + mediaPlayer.isPlaying());
+                    } catch (Exception e){
                         e.printStackTrace();
                     }
                 }
+                current_duration.setText(convertToTime(0,1));
 
                 pause.setImageResource(R.drawable.icon_play);
                 sb.setProgress(0);
+
                 playAgain = true;
+                Log.e("MSG",songName.getText() + "Stopped");
             }
         };
         updateSeekBar.start();
