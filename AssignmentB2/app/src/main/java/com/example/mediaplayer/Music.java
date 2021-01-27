@@ -103,7 +103,7 @@ public class Music extends AppCompatActivity {
 
                         sb.setProgress(Math.min(currentPosition, mediaPlayer.getDuration()));
 
-                        if(!mediaPlayer.isPlaying()) {
+                        if(currentPosition >= mediaPlayer.getDuration()) {
                             sb.setProgress(0);
                             current_duration.setText(convertToTime(0, 1));
                             pause.setImageResource(R.drawable.icon_play);
